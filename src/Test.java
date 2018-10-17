@@ -26,8 +26,8 @@ public class Test {
            System.err.println("Temperatura za wysoka może ona uszkodzić komputer!");
         }finally {
             System.out.println(" Processor clocking: "+((Processor) processor).getClocking()+" tempWork: "+
-                    ((Processor) processor).getWorkTemp());
-            System.out.println(" Memory clocking: "+((Memory) memory).getClocking()+" tempWork: "+
+                    ((Processor) processor).getWorkTemp()+
+            " \nMemory clocking: "+((Memory) memory).getClocking()+" tempWork: "+
                     ((Memory) memory).getWorkTemp());
         }
     }
