@@ -3,7 +3,7 @@ public class Methods implements ClockingChange{
     AssemblyComputer processor;
     AssemblyComputer memory;
 
-    double clocking=0;
+    double clocking;
     int NewTemp=0;
     double pclockingBase;
     double mclockingBase;
@@ -47,19 +47,24 @@ public class Methods implements ClockingChange{
     }
 
     @Override
-    public double clockingDecrease(int diffClocking,AssemblyComputer assemblyComputer) {
-        if(assemblyComputer==processor){
+    public double clockingDecrease(int diffClocking, int choice) {
+        switch (choice){
+            case 1:
             ((Processor) processor).setClocking(pclockingBase-diffClocking);
             if(((Processor) processor).getClocking()<pclockingBase){
                 ((Processor) processor).setClocking(pclockingBase);
                 clocking=((Processor) processor).getClocking();
             }
-        }else if(assemblyComputer==memory){
+            break;
+            case 2:
             ((Memory) memory).setClocking(mclockingBase+diffClocking);
             if(((Memory) memory).getClocking()<mclockingBase){
                 ((Memory) memory).setClocking(mclockingBase);
                 clocking=((Memory) memory).getClocking();
             }
+            break;
+            default:
+                System.out.println("Nie wybrano żadnego podzespołu");
         }
         return clocking;
     }
