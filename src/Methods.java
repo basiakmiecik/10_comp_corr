@@ -3,29 +3,34 @@ public class Methods implements ClockingChange{
     AssemblyComputer processor;
     AssemblyComputer memory;
 
+    double clocking=0;
+    int NewTemp=0;
+    double pclockingBase;
+    double mclockingBase;
+
     public Methods(AssemblyComputer processor, AssemblyComputer memory) {
         this.processor = processor;
         this.memory = memory;
     }
 
-    double pclockingBase=3000;
-
-    //((Processor) processor).getWorkTemp();
-    double mclockingBase=((Memory)memory).getClocking();
-    double clocking=0;
-    int NewTemp=0;//
+    @Override
+    public void fabricValue() {
+        pclockingBase=((Processor)processor).getClocking();
+        mclockingBase=((Memory)memory).getClocking();
+    }
 
     @Override
     public double clockingIncrease(int addClocking,int choice){
-
-        double clockingMax= Math.round(pclockingBase+((Processor) processor).getMaxTemp()-
-                ((Processor) processor).getWorkTemp()*100/10);
-        System.out.println(clockingMax);
-        double mclockingMax= Math.round(pclockingBase+(((Processor) processor).getMaxTemp()-
-                ((Processor) processor).getWorkTemp())*100/10);
+        mclockingBase=((Memory)memory).getClocking();
+        double clockingMax= pclockingBase+Math.round((((Processor) processor).getMaxTemp()-
+                ((Processor) processor).getWorkTemp())*10);
+        System.out.println("Max Clocking procssor: "+clockingMax);
+        double mclockingMax= Math.round(mclockingBase+((((Memory)memory).getMaxTemp()-
+                ((Memory) memory).getWorkTemp()))*10);
+        System.out.println("Max Clocking memory: "+mclockingMax);
         if(choice==1){
             ((Processor) processor).setClocking(pclockingBase+addClocking);
-           NewTemp=((Processor) processor).getWorkTemp()+(addClocking/15);
+           NewTemp=((Processor) processor).getWorkTemp()+(addClocking/10);
            ((Processor) processor).setWorkTemp(NewTemp);
             if(((Processor) processor).getClocking()>clockingMax){
                 throw new TempertureToHighException();
