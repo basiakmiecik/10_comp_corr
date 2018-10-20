@@ -1,4 +1,4 @@
-public class Memory extends AssemblyComputer implements OverclockableComponent,DecreaseclockComponent{
+public class Memory extends AssemblyComputer implements OverclockableComponent {
     private double clocking;
     private int workTemp;
     private int maxTemp;

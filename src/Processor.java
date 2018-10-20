@@ -1,4 +1,4 @@
-public class Processor extends AssemblyComputer implements OverclockableComponent,DecreaseclockComponent {
+public class Processor extends AssemblyComputer implements OverclockableComponent {
     private double clocking;
     private int workTemp;
     private int maxTemp;

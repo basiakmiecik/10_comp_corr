@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class Main {
     public void main() {
         DataBase dataBase = new DataBase();
-        List<AssemblyComputer> components = dataBase.componets();
+        List<Computer> components = dataBase.componets();
 
-        Processor processor = (Processor) components.get(0);
-        Memory memory = (Memory) components.get(1);
+        Processor processor = components.get(0).getProcessor();
+        Memory memory = components.get(0).getMemory();
 
 
         Scanner scanner = new Scanner(System.in);
