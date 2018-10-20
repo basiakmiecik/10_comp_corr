@@ -5,47 +5,83 @@ import java.util.Scanner;
 public class Main {
     public void main() {
         DataBase dataBase = new DataBase();
-        //List<AssemblyComputer>components= new ArrayList<>();
+        List<AssemblyComputer> components = dataBase.componets();
 
-        AssemblyComputer processor = dataBase.componets().get(0);
-
-        AssemblyComputer memory=dataBase.componets().get(1);
+        Processor processor = (Processor) components.get(0);
+        Memory memory = (Memory) components.get(1);
 
 
         Scanner scanner = new Scanner(System.in);
-        Methods methods = new Methods(processor, memory);
-        methods.fabricValue();
+        String koniec;
+        boolean end=false;
+        String choice="";
+        int changeClocking=0;
+        int mhz=0;
 
 
-        System.out.println("Co chcesz zrobić? Zwiększyć czy zmniejszyć taktowanie? Jeżeli zwiększyć wpisz 1," +
-                " jeżeli zmniejszyć wpisz 2");
-        int changeClockig = scanner.nextInt();
-        System.out.println("Jeżeli chcesz  zmienić taktowanie procesora wpisz 1, a jeżeli memory wpisz 2");
-        int choice = scanner.nextInt();
-        scanner.nextLine();
-        System.out.println("O jaką wartość chcesz zmienić takowanie? ");
-        int addClocking = scanner.nextInt();
+        do {
+            System.out.println("Czy chcesz zmienić taktowanie wybranego komponentu (tak albo nie)");
+            koniec=scanner.nextLine();
+            switch (koniec) {
+                case "tak": {
+                    System.out.println("Jeżeli chcesz  zmienić taktowanie procesora wpisz 'p', a jeżeli memory wpisz 'm'. ");
+                    choice = scanner.nextLine();
+                    System.out.println("\nJeżeli zwiększyć taktowanie wpisz 1, jeżeli zmniejszyć taktowanie wpisz 2");
+                    changeClocking = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("\nO jaką wartość chcesz zmienić takowanie? ");
+                    mhz = scanner.nextInt();
+                    scanner.nextLine();
+                    try {
+                        switch (choice) {
+                            case "p": {
+                                switch (changeClocking) {
+                                    case 1:
+                                        processor.overClock(mhz);
+                                        break;
+                                    case 2:
+                                        processor.decreaseClock(mhz);
+                                        break;
+                                    default:
+                                        System.out.println("Nie wiadomo czy zwiększyć czy zmniejszyć taktowanie procesora, " +
+                                                "wybierz ponownie");
+                                }
+                            }
+                            break;
+                            case "m":{
+                                switch (changeClocking) {
+                                    case 1:
+                                        memory.overClock(mhz);
+                                        break;
+                                    case 2:
+                                        memory.decreaseClock(mhz);
+                                        break;
+                                    default:
+                                        System.out.println("Nie wiadomo czy zmniejszyć czy zwiększyć taktowanie pamięci," +
+                                                " wybierz ponownie");
+                                }
 
-        try {
-            switch (changeClockig) {
-                case 1:
-                    methods.clockingIncrease(addClocking, choice);
+                            }
+                            break;
+                            default:
+                                System.out.println("Nie wybrałeś żadnej opcji!");
+                        }
+
+                    } catch (TempertureToHighException e) {
+                        System.err.println("Temperatura za wysoka może ona uszkodzić komputer!");
+                    } finally {
+                        System.out.println(" Processor clocking: " + processor.getClocking() + " tempWork: " +
+                                processor.getWorkTemp() +
+                                " \nMemory clocking: " + memory.getClocking() + " tempWork: " +
+                                memory.getWorkTemp());
+
+                    }
                     break;
-                case 2:
-                    methods.clockingDecrease(addClocking, choice);
+                }
+                case "nie":
+                    end = true;
                     break;
-                default:
-                    System.out.println("Nie wybrałeś żadnej opcji!");
             }
-
-        } catch (TempertureToHighException e) {
-            System.err.println("Temperatura za wysoka może ona uszkodzić komputer!");
-        } finally {
-            System.out.println(" Processor clocking: " + ((Processor) processor).getClocking() + " tempWork: " +
-                    ((Processor) processor).getWorkTemp() +
-                    " \nMemory clocking: " + ((Memory) memory).getClocking() + " tempWork: " +
-                    ((Memory) memory).getWorkTemp());
-        }
+        } while (!end);
     }
 }
-

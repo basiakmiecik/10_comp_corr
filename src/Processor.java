@@ -1,7 +1,10 @@
-public class Processor extends AssemblyComputer{
- private double clocking;
- private int workTemp;
- private int maxTemp;
+public class Processor extends AssemblyComputer implements OverclockableComponent,DecreaseclockComponent {
+    private double clocking;
+    private int workTemp;
+    private int maxTemp;
+    int fabricTemp;
+    double fabricClocking;
+
 
     public Processor() {
     }
@@ -11,6 +14,9 @@ public class Processor extends AssemblyComputer{
         this.clocking = clocking;
         this.workTemp = workTemp;
         this.maxTemp = maxTemp;
+        fabricTemp = workTemp;
+        fabricClocking = clocking;
+
     }
 
     public double getClocking() {
@@ -35,5 +41,30 @@ public class Processor extends AssemblyComputer{
 
     public void setMaxTemp(int maxTemp) {
         this.maxTemp = maxTemp;
+    }
+
+
+    @Override
+    public double overClock(int mhz) {
+        double clockingMax = fabricClocking + Math.round(maxTemp - fabricTemp) * 10;
+        System.out.println("Max Clocking processor: " + clockingMax);
+        clocking = clocking + mhz;
+        int NewTemp = workTemp + (mhz / 10);
+        workTemp = NewTemp;
+        if (clocking > clockingMax) {
+            throw new TempertureToHighException();
+        }
+        return clocking;
+    }
+
+    @Override
+    public double decreaseClock(int mhz) {
+        clocking = clocking - mhz;
+        if (clocking < fabricClocking) {
+            clocking = fabricClocking;
+            workTemp = fabricTemp;
+            System.err.println("Nie można zmniejszyć o zadaną wartośc, ustwawiono wartości fabryczne");
+        }
+        return clocking;
     }
 }
